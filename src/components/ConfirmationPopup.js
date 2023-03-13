@@ -1,5 +1,5 @@
-import React from 'react';
-import PopupWithForm from './PopupWithForm';
+import React from "react";
+import PopupWithForm from "./PopupWithForm";
 
 function ConfirmationPopup({ isOpen, onClose, onCardDelete, card }) {
   const handleCardDelete = (e) => {
@@ -7,7 +7,17 @@ function ConfirmationPopup({ isOpen, onClose, onCardDelete, card }) {
 
     onCardDelete(card);
   };
-  return <PopupWithForm title="Вы уверены?" name="delete-card" buttonText="Да" isOpen={isOpen} onClose={onClose} onSubmit={handleCardDelete} isValid={true}></PopupWithForm>;
+  return (
+    <PopupWithForm
+      title="Вы уверены?"
+      name="delete-card"
+      buttonText="Да"
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleCardDelete}
+      isValid={true}
+    ></PopupWithForm>
+  );
 }
 
 export default ConfirmationPopup;

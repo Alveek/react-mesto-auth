@@ -1,3 +1,7 @@
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import ProtectedRouteElement from "./ProtectedRoute";
+import Login from "./Login";
+import Register from "./Register";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Header from "./Header";
@@ -23,19 +27,45 @@ function App() {
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
   const [dataLoadingError, setDataLoadingError] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   handleTokenCheck();
+  // }, []);
+  //
+  // const handleTokenCheck = () => {
+  //   if (localStorage.getItem("jwt")) {
+  //     const jwt = localStorage.getItem("jwt");
+  //     api.checkToken(jwt).then((res) => {
+  //       console.log(res);
+  //       if (res) {
+  //         setLoggedIn(true);
+  //         navigate("/", { replace: true });
+  //       }
+  //     });
+  //   }
+  // };
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([user, cards]) => {
-        setCurrentUser(user);
-        setCards(cards);
-        setDataIsLoaded(true);
-      })
-      .catch((err) => {
-        setDataLoadingError(`Что-то пошло не так... (${err})`);
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user);
+          setCards(cards);
+          setDataIsLoaded(true);
+        })
+        .catch((err) => {
+          setDataLoadingError(`Что-то пошло не так... (${err})`);
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   const handleCardClick = (data) => {
     setSelectedCard(data);
@@ -132,19 +162,40 @@ function App() {
     <div className="page">
       <CurrentUserContext.Provider value={{ currentUser }}>
         <Header />
-        {!dataIsLoaded ? (
-          <Loader error={dataLoadingError} />
-        ) : (
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onTrashClick={handleTrashClick}
+        <Routes>
+          {/*<Route*/}
+          {/*  path="/"*/}
+          {/*  element={*/}
+          {/*    loggedIn ? (*/}
+          {/*      <Navigate to="/" replace />*/}
+          {/*    ) : (*/}
+          {/*      <Navigate to="/sign-in" replace />*/}
+          {/*    )*/}
+          {/*  }*/}
+          {/*/>*/}
+          <Route
+            path="/"
+            element={
+              <ProtectedRouteElement
+                element={Main}
+                loggedIn={loggedIn}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onTrashClick={handleTrashClick}
+              />
+            }
           />
-        )}
+          <Route path="/sign-up" element={<Register />} />
+          <Route
+            path="/sign-in"
+            element={<Login handleLogin={handleLogin} />}
+          />
+        </Routes>
+
         <Footer />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />

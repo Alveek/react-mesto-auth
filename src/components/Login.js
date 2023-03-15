@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import * as auth from '../auth.js';
+import * as auth from "../utils/auth";
 
 const Login = ({ handleLogin }) => {
   const [formValue, setFormValue] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const navigate = useNavigate();
@@ -19,20 +19,16 @@ const Login = ({ handleLogin }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hello from Login page");
-    // if (!formValue.username || !formValue.password) {
-    //   return;
-    // }
-    // auth
-    //   .authorize(formValue.username, formValue.password)
-    //   .then((data) => {
-    //     if (data.jwt) {
-    //       setFormValue({ username: "", password: "" });
-    //       handleLogin();
-    //       navigate("/diary", { replace: true });
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
+    if (!formValue.email || !formValue.password) {
+      return;
+    }
+    auth.authorize(formValue.email, formValue.password).then((data) => {
+      if (data.token) {
+        setFormValue({ email: "", password: "" });
+        handleLogin();
+        navigate("/", { replace: true });
+      }
+    });
   };
 
   return (
@@ -43,13 +39,13 @@ const Login = ({ handleLogin }) => {
         className="login__form"
         style={{ display: "flex", flexDirection: "column", width: "300px" }}
       >
-        <label htmlFor="username">Логин:</label>
+        <label htmlFor="username">e-mail:</label>
         <input
           required
-          id="username"
-          name="username"
-          type="text"
-          value={formValue.username}
+          id="email"
+          name="email"
+          type="email"
+          value={formValue.email || ""}
           onChange={handleChange}
         />
         <label htmlFor="password">Пароль:</label>
@@ -58,7 +54,7 @@ const Login = ({ handleLogin }) => {
           id="password"
           name="password"
           type="password"
-          value={formValue.password}
+          value={formValue.password || ""}
           onChange={handleChange}
         />
         <div className="login__button-container">

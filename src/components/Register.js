@@ -24,10 +24,12 @@ const Register = () => {
     if (!formValue.email || !formValue.password) {
       return;
     }
-    auth.register(formValue.email, formValue.password).then((res) => {
-      navigate("/sign-in", { replace: true });
-      console.log(res);
-    });
+    auth
+      .register(formValue.email, formValue.password)
+      .then((res) => {
+        navigate("/sign-in", { replace: true });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

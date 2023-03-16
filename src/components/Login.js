@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import * as auth from "../utils/auth";
 
-const Login = ({ handleLogin }) => {
+const Login = ({onLogin}) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -10,7 +10,7 @@ const Login = ({ handleLogin }) => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
 
     setFormValue({
       ...formValue,
@@ -24,20 +24,21 @@ const Login = ({ handleLogin }) => {
     }
     auth.authorize(formValue.email, formValue.password).then((data) => {
       if (data.token) {
-        setFormValue({ email: "", password: "" });
-        handleLogin();
-        navigate("/", { replace: true });
+        setFormValue({email: "", password: ""});
+        onLogin(data);
+        navigate("/", {replace: true});
       }
-    });
+    }).catch((err) => console.log(err));
   };
 
+
   return (
-    <div className="login" style={{ color: "#fff" }}>
+    <div className="login" style={{color: "#fff"}}>
       <p className="login__welcome">Добро пожаловать!</p>
       <form
         onSubmit={handleSubmit}
         className="login__form"
-        style={{ display: "flex", flexDirection: "column", width: "300px" }}
+        style={{display: "flex", flexDirection: "column", width: "300px"}}
       >
         <label htmlFor="username">e-mail:</label>
         <input

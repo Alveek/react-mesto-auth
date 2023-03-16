@@ -3,6 +3,7 @@ import ProtectedRouteElement from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
 import { api } from "../utils/api";
+import * as auth from "../utils/auth";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Header from "./Header";
 import Main from "./Main";
@@ -28,44 +29,54 @@ function App() {
   const [dataLoadingError, setDataLoadingError] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   handleTokenCheck();
-  // }, []);
-  //
-  // const handleTokenCheck = () => {
-  //   if (localStorage.getItem("jwt")) {
-  //     const jwt = localStorage.getItem("jwt");
-  //     api.checkToken(jwt).then((res) => {
-  //       console.log(res);
-  //       if (res) {
-  //         setLoggedIn(true);
-  //         navigate("/", { replace: true });
-  //       }
-  //     });
-  //   }
-  // };
+  useEffect(() => {
+    handleTokenCheck();
+  }, [navigate]);
 
-  const handleLogin = () => {
+  const handleTokenCheck = () => {
+    if (localStorage.getItem("jwt")) {
+      const jwt = localStorage.getItem("jwt");
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          // console.log(res);
+          if (res) {
+            setEmail(res.data.email);
+            setLoggedIn(true);
+            navigate("/");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleLogin = (data) => {
     setLoggedIn(true);
+    localStorage.setItem("jwt", data.token);
+  };
+
+  const handleSignOut = () => {
+    setEmail("");
+    localStorage.removeItem("jwt");
+    navigate("/sign-in");
   };
 
   useEffect(() => {
-    if (loggedIn) {
-      Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([user, cards]) => {
-          setCurrentUser(user);
-          setCards(cards);
-          setDataIsLoaded(true);
-        })
-        .catch((err) => {
-          setDataLoadingError(`Что-то пошло не так... (${err})`);
-          console.log(err);
-        });
-    }
-  }, [loggedIn]);
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([user, cards]) => {
+        setCurrentUser(user);
+        setCards(cards);
+        setDataIsLoaded(true);
+      })
+      .catch((err) => {
+        setDataLoadingError(`Что-то пошло не так... (${err})`);
+        console.log(err);
+      });
+  }, []);
 
   const handleCardClick = (data) => {
     setSelectedCard(data);
@@ -161,18 +172,8 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={{ currentUser }}>
-        <Header />
+        <Header email={email} onSignOut={handleSignOut} />
         <Routes>
-          {/*<Route*/}
-          {/*  path="/"*/}
-          {/*  element={*/}
-          {/*    loggedIn ? (*/}
-          {/*      <Navigate to="/" replace />*/}
-          {/*    ) : (*/}
-          {/*      <Navigate to="/sign-in" replace />*/}
-          {/*    )*/}
-          {/*  }*/}
-          {/*/>*/}
           <Route
             path="/"
             element={
@@ -190,10 +191,7 @@ function App() {
             }
           />
           <Route path="/sign-up" element={<Register />} />
-          <Route
-            path="/sign-in"
-            element={<Login handleLogin={handleLogin} />}
-          />
+          <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
         </Routes>
 
         <Footer />

@@ -62,7 +62,7 @@ function App() {
   const handleSignOut = () => {
     setEmail("");
     localStorage.removeItem("jwt");
-    navigate("/sign-in");
+    // navigate("/sign-in");
   };
 
   useEffect(() => {

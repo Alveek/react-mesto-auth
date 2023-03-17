@@ -51,3 +51,7 @@
 @import url("./blocks/loader/__circle/loader__circle.css");
 @import url("./blocks/show/show.css");
 @import url("./blocks/hide/hide.css");
+
+.white {
+  color: #fff;
+}

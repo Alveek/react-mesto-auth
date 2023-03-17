@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import * as auth from "../utils/auth";
+import { auth } from "../utils/auth";
 
-const Register = () => {
+const Register = ({ setErr, setIsInfoTooltipOpen }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -20,16 +20,21 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(formValue.email, formValue.password);
     if (!formValue.email || !formValue.password) {
       return;
     }
     auth
       .register(formValue.email, formValue.password)
       .then((res) => {
+        setErr(false);
+        setIsInfoTooltipOpen((prev) => !prev);
         navigate("/sign-in", { replace: true });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErr(true);
+        setIsInfoTooltipOpen((prev) => !prev);
+        console.log(err);
+      });
   };
 
   return (

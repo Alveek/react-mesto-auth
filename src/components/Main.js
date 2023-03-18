@@ -18,14 +18,13 @@ function Main({
     <>
       <main className={`content`}>
         <section className="profile">
-          <div className="profile__avatar-container">
+          <div className="profile__avatar-container" onClick={onEditAvatar}>
             <img
               src={currentUser.avatar}
               alt="Аватарка"
               className="profile__avatar"
             />
             <img
-              onClick={onEditAvatar}
               className="profile__updavatar-button"
               src={iconPencil}
               alt="edit-pencil"

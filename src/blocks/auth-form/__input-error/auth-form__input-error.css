@@ -1,0 +1,6 @@
+.auth-form__input-error {
+  display: block;
+  margin-top: 2px;
+  padding: 0;
+  height: 28px;
+}

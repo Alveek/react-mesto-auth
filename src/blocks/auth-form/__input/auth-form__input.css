@@ -1,0 +1,14 @@
+.auth-form__input {
+  all: unset;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+/*.auth-form__input:last-child {*/
+/*  margin-top: 200px;*/
+/*  color: plum;*/
+/*}*/

@@ -32,7 +32,7 @@ build/
 .serverless/
 
 ### SublimeText ###
-# cache files for sublime text
+# cache files for sublime __text
 *.tmlanguage.cache
 *.tmPreferences.cache
 *.stTheme.cache

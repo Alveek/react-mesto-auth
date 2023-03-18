@@ -79,7 +79,7 @@ a {
 
 /**
  * 1. Remove the bottom border in Chrome 57-
- * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+ * 2. Add the correct __text decoration in Chrome, Edge, IE, Opera, and Safari.
  */
 
 abbr[title] {
@@ -180,8 +180,8 @@ input {
 }
 
 /**
- * Remove the inheritance of text transform in Edge, Firefox, and IE.
- * 1. Remove the inheritance of text transform in Firefox.
+ * Remove the inheritance of __text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of __text transform in Firefox.
  */
 
 button,
@@ -233,7 +233,7 @@ fieldset {
 }
 
 /**
- * 1. Correct the text wrapping in Edge and IE.
+ * 1. Correct the __text wrapping in Edge and IE.
  * 2. Correct the color inheritance from `fieldset` elements in IE.
  * 3. Remove the padding so developers are not caught out when they zero out
  *    `fieldset` elements in all browsers.

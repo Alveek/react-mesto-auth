@@ -1,30 +1,36 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../utils/auth";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const Register = ({ setErr, setIsInfoTooltipOpen }) => {
-  const [formValue, setFormValue] = useState({
-    email: "",
-    password: "",
-  });
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    setIsValid,
+    setValues,
+    resetForm,
+  } = useFormAndValidation();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //
+  //   setFormValue({
+  //     ...formValue,
+  //     [name]: value,
+  //   });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formValue.email || !formValue.password) {
+    if (!values.email || !values.password) {
       return;
     }
     auth
-      .register(formValue.email, formValue.password)
+      .register(values.email, values.password)
       .then((res) => {
         setErr(false);
         setIsInfoTooltipOpen((prev) => !prev);
@@ -38,43 +44,63 @@ const Register = ({ setErr, setIsInfoTooltipOpen }) => {
   };
 
   return (
-    <div className="register" style={{ color: "#fff" }}>
-      <p className="register__welcome">Пожалуйста, зарегистрируйтесь.</p>
-      <form
-        onSubmit={handleSubmit}
-        className="register__form"
-        style={{ display: "flex", flexDirection: "column", width: "300px" }}
-      >
-        <label htmlFor="email">Email:</label>
+    <>
+      <form onSubmit={handleSubmit} className="auth-form">
+        <p className="auth-form__welcome">Регистрация</p>
         <input
-          id="email"
+          className="auth-form__input form__input_user_email"
+          id="user-email-input"
           name="email"
+          value={values.email || ""}
+          onChange={handleChange}
           type="email"
-          value={formValue.email || ""}
-          onChange={handleChange}
+          placeholder="Email"
+          minLength="2"
+          maxLength="40"
+          required
         />
-        <label htmlFor="password">Пароль:</label>
+        <span
+          className={`form__input-error auth-form__input-error ${
+            isValid ? "" : "form__input-error_active"
+          }`}
+        >
+          {errors.email}
+        </span>
         <input
-          id="password"
+          className="auth-form__input form__input_user_password"
+          id="user-password-input"
           name="password"
-          type="password"
-          value={formValue.password || ""}
+          value={values.password || ""}
           onChange={handleChange}
+          type="password"
+          placeholder="Пароль"
+          minLength="6"
+          maxLength="200"
+          required
         />
+        <span
+          className={`form__input-error auth-form__input-error ${
+            isValid ? "" : "form__input-error_active"
+          }`}
+        >
+          {errors.password}
+        </span>
 
-        <div className="register__button-container">
-          <button type="submit" className="register__link">
-            Зарегистрироваться
-          </button>
+        <button
+          type="submit"
+          className="auth-form__submit-button"
+          disabled={!isValid}
+        >
+          Зарегистрироваться
+        </button>
+        <div className="auth-form__text">
+          <span>Уже зарегистрированы? </span>
+          <Link to="/sign-in" className="auth-form__link">
+            Войти
+          </Link>
         </div>
       </form>
-      <div className="register__signin">
-        <p>Уже зарегистрированы?</p>
-        <Link to="/sign-in" className="register__login-link">
-          Войти
-        </Link>
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -1,14 +1,14 @@
-import {Route, Routes, Navigate, useNavigate} from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import ProtectedRouteElement from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
-import {api} from "../utils/api";
-import {auth} from "../utils/auth";
-import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import { api } from "../utils/api";
+import { auth } from "../utils/auth";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -127,7 +127,7 @@ function App() {
     api
       .editProfile(user)
       .then(() => {
-        setCurrentUser({...currentUser, name: user.name, about: user.about});
+        setCurrentUser({ ...currentUser, name: user.name, about: user.about });
         closeAllPopups();
       })
       .catch((err) => console.log(err))
@@ -169,8 +169,8 @@ function App() {
 
   return (
     <div className="page">
-      <CurrentUserContext.Provider value={{currentUser}}>
-        <Header email={email} onSignOut={handleSignOut}/>
+      <CurrentUserContext.Provider value={{ currentUser }}>
+        <Header email={email} onSignOut={handleSignOut} />
         <Routes>
           <Route
             path="/"
@@ -210,9 +210,9 @@ function App() {
           />
         </Routes>
 
-        <Footer/>
+        <Footer />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}

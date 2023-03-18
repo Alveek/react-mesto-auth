@@ -51,8 +51,16 @@
 @import url("./blocks/loader/__circle/loader__circle.css");
 @import url("./blocks/show/show.css");
 @import url("./blocks/hide/hide.css");
-
-.white {
-  color: #fff;
-}
-
+@import url("./blocks/header/__info/header__info.css");
+@import url("./blocks/header/__user-email/header__user-email.css");
+@import url("./blocks/header/__route/header__route.css");
+@import url("./blocks/infotooltip/infotooltip.css");
+@import url("./blocks/infotooltip/__image/infotooltip__image.css");
+@import url("./blocks/infotooltip/__text/infotooltip__text.css");
+@import url("./blocks/auth-form/auth-form.css");
+@import url("./blocks/auth-form/__input/auth-form__input.css");
+@import url("./blocks/auth-form/__welcome/auth-form__welcome.css");
+@import url("./blocks/auth-form/__submit-button/auth-form__submit-button.css");
+@import url("./blocks/auth-form/__input-error/auth-form__input-error.css");
+@import url("blocks/auth-form/__link/auth-form__link.css");
+@import url("blocks/auth-form/__text/auth-form__text.css");

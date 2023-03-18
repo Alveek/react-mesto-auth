@@ -1,6 +1,7 @@
 .profile__avatar-container {
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
 
 .profile__avatar-container:hover .profile__updavatar-button {

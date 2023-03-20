@@ -2,3 +2,9 @@
   text-decoration: none;
   color: #fff;
 }
+
+.auth-form__link:hover {
+  opacity: 0.6;
+}
+
+

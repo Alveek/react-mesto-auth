@@ -29,9 +29,8 @@
   opacity: 0.6;
 }
 
-/*@media screen and (max-width: 425px) {*/
-/*  .auth-form__submit-button {*/
-/*    font-size: 14px;*/
-/*    line-height: 17px;*/
-/*  }*/
-/*}*/
+@media screen and (max-width: 425px) {
+  .auth-form__submit-button {
+    margin-top: 20px;
+  }
+}

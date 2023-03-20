@@ -13,7 +13,6 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import Loader from "./Loader";
 import ConfirmationPopup from "./ConfirmationPopup";
 import InfoTooltip from "./InfoTooltip";
 
@@ -185,6 +184,8 @@ function App() {
                 cards={cards}
                 onCardLike={handleCardLike}
                 onTrashClick={handleTrashClick}
+                dataIsLoaded={dataIsLoaded}
+                dataLoadingError={dataLoadingError}
               />
             }
           />

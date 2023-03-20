@@ -62,5 +62,9 @@
 @import url("./blocks/auth-form/__welcome/auth-form__welcome.css");
 @import url("./blocks/auth-form/__submit-button/auth-form__submit-button.css");
 @import url("./blocks/auth-form/__input-error/auth-form__input-error.css");
-@import url("blocks/auth-form/__link/auth-form__link.css");
-@import url("blocks/auth-form/__text/auth-form__text.css");
+@import url("./blocks/auth-form/__link/auth-form__link.css");
+@import url("./blocks/auth-form/__text/auth-form__text.css");
+@import url("./blocks/header/__menu-btn/header__menu-btn.css");
+@import url("./blocks/header/__logo-container/header__logo-container.css");
+@import url("./blocks/header/__info/_visible/header__info_visible.css");
+@import url("./blocks/header/_unauth/header_unauth.css");

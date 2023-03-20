@@ -1,0 +1,10 @@
+.header__menu-btn {
+  all: unset;
+
+}
+
+@media screen and (min-width: 430px) {
+  .header__menu-btn {
+    display: none;
+  }
+}

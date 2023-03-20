@@ -2,4 +2,12 @@
   width: 358px;
   margin: 0 auto;
   color: #fff;
+  margin-bottom: 200px;
+}
+
+@media screen and (max-width: 425px) {
+  .auth-form {
+    width: 260px;
+    margin-bottom: 50px;
+  }
 }

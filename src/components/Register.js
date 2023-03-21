@@ -1,32 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../utils/auth";
+import { Link } from "react-router-dom";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
-const Register = ({ setErr, setIsInfoTooltipOpen }) => {
+const Register = ({ onRegister }) => {
   const { values, handleChange, errors, isValid } = useFormAndValidation();
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!values.email || !values.password) {
-      return;
-    }
-    auth
-      .register(values.email, values.password)
-      .then((res) => {
-        setErr(false);
-        setIsInfoTooltipOpen((prev) => !prev);
-        navigate("/sign-in", { replace: true });
-      })
-      .catch((err) => {
-        setErr(true);
-        setIsInfoTooltipOpen((prev) => !prev);
-        console.log(err);
-      });
-  };
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onRegister(values);
+      }}
+      className="auth-form"
+    >
       <p className="auth-form__welcome">Регистрация</p>
       <input
         className="auth-form__input form__input_user_email"

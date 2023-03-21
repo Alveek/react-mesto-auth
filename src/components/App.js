@@ -36,8 +36,8 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("jwt")) {
-      const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
       auth
         .checkToken(jwt)
         .then((res) => {
@@ -51,28 +51,63 @@ function App() {
     }
   }, []);
 
-  const handleLogin = (data) => {
-    setLoggedIn(true);
-    localStorage.setItem("jwt", data.token);
-  };
-
   const handleSignOut = () => {
     setEmail("");
     localStorage.removeItem("jwt");
   };
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([user, cards]) => {
-        setCurrentUser(user);
-        setCards(cards);
-        setDataIsLoaded(true);
+    loggedIn &&
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user);
+          setCards(cards);
+          setDataIsLoaded(true);
+        })
+        .catch((err) => {
+          setDataLoadingError(`Что-то пошло не так... (${err})`);
+          console.log(err);
+        });
+  }, [loggedIn]);
+
+  const handleRegister = (values) => {
+    if (!values.email || !values.password) {
+      return;
+    }
+    auth
+      .register(values.email, values.password)
+      .then((res) => {
+        setErr(false);
+        setIsInfoTooltipOpen((prev) => !prev);
+        navigate("/sign-in", { replace: true });
       })
       .catch((err) => {
-        setDataLoadingError(`Что-то пошло не так... (${err})`);
+        setErr(true);
+        setIsInfoTooltipOpen((prev) => !prev);
         console.log(err);
       });
-  }, []);
+  };
+
+  const handleLogin = (values) => {
+    if (!values.email || !values.password) {
+      return;
+    }
+    auth
+      .authorize(values.email, values.password)
+      .then((data) => {
+        if (data.token) {
+          setLoggedIn(true);
+          localStorage.setItem("jwt", data.token);
+          setEmail(values.email);
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        setErr(true);
+        setIsInfoTooltipOpen((prev) => !prev);
+        console.log(err);
+      });
+  };
 
   const handleCardClick = (data) => {
     setSelectedCard(data);
@@ -191,12 +226,7 @@ function App() {
           />
           <Route
             path="/sign-up"
-            element={
-              <Register
-                setErr={setErr}
-                setIsInfoTooltipOpen={setIsInfoTooltipOpen}
-              />
-            }
+            element={<Register onRegister={handleRegister} />}
           />
           <Route
             path="/sign-in"

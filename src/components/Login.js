@@ -1,38 +1,16 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../utils/auth";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
-const Login = ({ onLogin, setErr, setIsInfoTooltipOpen, setEmail }) => {
-  const { values, handleChange, errors, isValid, setValues } =
-    useFormAndValidation();
-
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!values.email || !values.password) {
-      return;
-    }
-    auth
-      .authorize(values.email, values.password)
-      .then((data) => {
-        if (data.token) {
-          setValues({ email: "", password: "" });
-          onLogin(data);
-          auth.checkToken(data.token).then((res) => setEmail(res.data.email));
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        setErr(true);
-        setIsInfoTooltipOpen((prev) => !prev);
-        console.log(err);
-      });
-  };
+const Login = ({ onLogin }) => {
+  const { values, handleChange, errors, isValid } = useFormAndValidation();
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onLogin(values);
+      }}
+      className="auth-form"
+    >
       <p className="auth-form__welcome">Вход</p>
       <input
         className="auth-form__input form__input_user_email"

@@ -2,10 +2,9 @@ import { useState } from "react";
 import logo from "../images/logo.svg";
 import hamClosed from "../images/ham-closed.svg";
 import hamOpened from "../images/ham-opened.svg";
-import { useLocation, Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 
 function Header({ email, onSignOut }) {
-  const location = useLocation();
   const [menuIsOpened, setMenuIsOpened] = useState(false);
 
   return (

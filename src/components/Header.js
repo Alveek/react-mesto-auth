@@ -2,7 +2,7 @@ import { useState } from "react";
 import logo from "../images/logo.svg";
 import hamClosed from "../images/ham-closed.svg";
 import hamOpened from "../images/ham-opened.svg";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, Route, Routes } from "react-router-dom";
 
 function Header({ email, onSignOut }) {
   const location = useLocation();
@@ -25,21 +25,32 @@ function Header({ email, onSignOut }) {
       </div>
       <div className={`header__info${menuIsOpened ? "_visible" : ""}`}>
         {email && <p className="header__user-email">{email}</p>}
-        {location.pathname === "/sign-up" && (
-          <Link className="header__route" to="/sign-in">
-            Войти
-          </Link>
-        )}
-        {location.pathname === "/sign-in" && (
-          <Link className="header__route" to="/sign-up">
-            Регистрация
-          </Link>
-        )}
-        {location.pathname === "/" && (
-          <Link className="header__route" onClick={onSignOut} to="/sign-in">
-            Выйти
-          </Link>
-        )}
+        <Routes>
+          <Route
+            path="/sign-up"
+            element={
+              <Link className="header__route" to="/sign-in">
+                Войти
+              </Link>
+            }
+          />
+          <Route
+            path="/sign-in"
+            element={
+              <Link className="header__route" to="/sign-up">
+                Регистрация
+              </Link>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <Link className="header__route" onClick={onSignOut} to="/sign-in">
+                Выйти
+              </Link>
+            }
+          />
+        </Routes>
       </div>
     </header>
   );
